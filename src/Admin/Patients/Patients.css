@@ -1,0 +1,85 @@
+.admin-patients {
+  margin-left: 250px;
+  padding: 30px;
+  background: #f8fbff;
+  min-height: 100vh;
+}
+
+.admin-patients h2 {
+  margin-bottom: 20px;
+}
+
+.patient-form {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.patient-form input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.patient-form button {
+  grid-column: span 4;
+  padding: 12px;
+  background: #0d6efd;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.patient-form button:hover {
+  background: #084298;
+}
+
+.patient-table table {
+  width: 100%;
+  background: #fff;
+  border-collapse: collapse;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.patient-table th,
+.patient-table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  text-align: center;
+}
+
+.patient-table th {
+  background: #0d6efd;
+  color: #fff;
+}
+
+.patient-table button {
+  background: red;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+@media (max-width: 992px) {
+  .patient-form {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .patient-form button {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 768px) {
+  .patient-form {
+    grid-template-columns: 1fr;
+  }
+
+  .patient-form button {
+    grid-column: span 1;
+  }
+}

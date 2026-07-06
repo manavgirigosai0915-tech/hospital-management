@@ -1,0 +1,63 @@
+.messages-page {
+  margin-left: 250px;
+  padding: 30px;
+  background: #f5f7fb;
+  min-height: 100vh;
+}
+
+.messages-page h2 {
+  margin-bottom: 25px;
+  color: #333;
+}
+
+.message-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.message-table th,
+.message-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+.message-table th {
+  background: #0d6efd;
+  color: white;
+}
+
+.message-table tr:nth-child(even) {
+  background: #f9f9f9;
+}
+
+.message-table tr:hover {
+  background: #eef4ff;
+}
+
+.delete-btn {
+  background: #dc3545;
+  color: #ffffff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background: #bb2d3b;
+}
+
+@media (max-width: 768px) {
+  .messages-page {
+    margin-left: 0;
+    padding: 20px;
+  }
+
+  .message-table {
+    display: block;
+    overflow-x: auto;
+  }
+}

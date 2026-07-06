@@ -1,0 +1,112 @@
+.doctor-page {
+  margin-left: 250px;
+  padding: 30px;
+  background: #f5f7fb;
+  min-height: 100vh;
+}
+
+.doctor-page h2 {
+  margin-bottom: 20px;
+}
+
+.doctor-form {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.doctor-form input {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.doctor-form button {
+  background: #0d6efd;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.doctor-form button:hover {
+  background: #084298;
+}
+
+.doctor-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.doctor-card {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.doctor-card img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.doctor-card h3 {
+  margin: 15px 0 10px;
+}
+
+.doctor-card p {
+  margin: 5px 0;
+  color: #555;
+}
+
+.delete-btn {
+  margin-top: 15px;
+  padding: 10px 20px;
+  background: crimson;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background: darkred;
+}
+
+@media (max-width: 992px) {
+  .doctor-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .doctor-form {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .doctor-form button {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 768px) {
+  .doctor-page {
+    margin-left: 0;
+    padding: 20px;
+  }
+
+  .doctor-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .doctor-form {
+    grid-template-columns: 1fr;
+  }
+
+  .doctor-form button {
+    grid-column: span 1;
+  }
+}
