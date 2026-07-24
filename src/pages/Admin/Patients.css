@@ -1,0 +1,117 @@
+.patient-page{
+padding:30px;
+background:#f4f7fc;
+min-height:100vh;
+}
+
+.patient-page h1{
+color:#1e3a8a;
+margin-bottom:25px;
+}
+
+.patient-form{
+display:grid;
+grid-template-columns:repeat(5,1fr);
+gap:15px;
+background:#fff;
+padding:20px;
+border-radius:10px;
+margin-bottom:20px;
+box-shadow:0 4px 10px rgba(0,0,0,.1);
+}
+
+.patient-form input{
+padding:12px;
+border:1px solid #ccc;
+border-radius:6px;
+font-size:15px;
+}
+
+.patient-form input:focus{
+border-color:#2563eb;
+outline:none;
+}
+
+.patient-form button{
+background:#2563eb;
+color:#fff;
+border:none;
+border-radius:6px;
+cursor:pointer;
+font-size:15px;
+}
+
+.patient-form button:hover{
+background:#1d4ed8;
+}
+
+.search-box{
+width:350px;
+padding:12px;
+border:1px solid #ccc;
+border-radius:6px;
+margin-bottom:20px;
+}
+
+.patient-table{
+width:100%;
+background:#fff;
+border-collapse:collapse;
+border-radius:10px;
+overflow:hidden;
+box-shadow:0 4px 10px rgba(0,0,0,.1);
+}
+
+.patient-table th{
+background:#2563eb;
+color:#fff;
+padding:15px;
+}
+
+.patient-table td{
+padding:15px;
+text-align:center;
+border-bottom:1px solid #ddd;
+}
+
+.patient-table tr:hover{
+background:#f1f5f9;
+}
+
+.delete-btn{
+background:#dc2626;
+color:white;
+border:none;
+padding:8px 15px;
+border-radius:5px;
+cursor:pointer;
+}
+
+.delete-btn:hover{
+background:#b91c1c;
+}
+
+@media(max-width:992px){
+
+.patient-form{
+grid-template-columns:repeat(2,1fr);
+}
+
+}
+
+@media(max-width:768px){
+
+.patient-form{
+grid-template-columns:1fr;
+}
+
+.search-box{
+width:100%;
+}
+
+.patient-table{
+display:block;
+overflow-x:auto;
+}
+
+}

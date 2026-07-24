@@ -1,34 +1,63 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AdminLayout from "../components/Layout/AdminLayout";
 import "./Departments.css";
 
-const Departments = () => {
-  const [departments, setDepartments] = useState([
-    {
-      id: 1,
-      name: "Cardiology",
-      head: "Dr. John Smith",
-      description: "Heart Care Department",
-    },
-    {
-      id: 2,
-      name: "Neurology",
-      head: "Dr. Sarah Johnson",
-      description: "Brain & Nerve Department",
-    },
-    {
-      id: 3,
-      name: "Orthopedics",
-      head: "Dr. Michael Brown",
-      description: "Bone & Joint Care",
-    },
-  ]);
+function Departments() {
+  const [departments, setDepartments] = useState([]);
 
   const [form, setForm] = useState({
     name: "",
     head: "",
     description: "",
   });
+
+  const [editId, setEditId] = useState(null);
+
+  const [search, setSearch] = useState("");
+
+  // Load Departments
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("departments"));
+
+    if (data && data.length > 0) {
+      setDepartments(data);
+    } else {
+      const demo = [
+        {
+          id: 1,
+          name: "Cardiology",
+          head: "Dr. John Smith",
+          description: "Heart Care Department",
+        },
+        {
+          id: 2,
+          name: "Neurology",
+          head: "Dr. Sarah Johnson",
+          description: "Brain & Nerve Department",
+        },
+        {
+          id: 3,
+          name: "Orthopedics",
+          head: "Dr. Michael Brown",
+          description: "Bone & Joint Care",
+        },
+      ];
+
+      setDepartments(demo);
+      localStorage.setItem(
+        "departments",
+        JSON.stringify(demo)
+      );
+    }
+  }, []);
+
+  // Save Departments
+  useEffect(() => {
+    localStorage.setItem(
+      "departments",
+      JSON.stringify(departments)
+    );
+  }, [departments]);
 
   const handleChange = (e) => {
     setForm({
@@ -37,21 +66,37 @@ const Departments = () => {
     });
   };
 
-  const addDepartment = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!form.name || !form.head || !form.description) {
+    if (
+      !form.name ||
+      !form.head ||
+      !form.description
+    ) {
       alert("Please fill all fields");
       return;
     }
 
-    setDepartments([
-      ...departments,
-      {
-        id: Date.now(),
-        ...form,
-      },
-    ]);
+    if (editId) {
+      const updated = departments.map((dept) =>
+        dept.id === editId
+          ? { ...dept, ...form }
+          : dept
+      );
+
+      setDepartments(updated);
+      setEditId(null);
+
+    } else {
+      setDepartments([
+        ...departments,
+        {
+          id: Date.now(),
+          ...form,
+        },
+      ]);
+    }
 
     setForm({
       name: "",
@@ -60,9 +105,24 @@ const Departments = () => {
     });
   };
 
-  const deleteDepartment = (id) => {
-    setDepartments(departments.filter((item) => item.id !== id));
+  const handleDelete = (id) => {
+    if (window.confirm("Delete Department?")) {
+      setDepartments(
+        departments.filter((dept) => dept.id !== id)
+      );
+    }
   };
+
+  const handleEdit = (dept) => {
+    setForm(dept);
+    setEditId(dept.id);
+  };
+
+  const filteredDepartments = departments.filter(
+    (dept) =>
+      dept.name.toLowerCase().includes(search.toLowerCase()) ||
+      dept.head.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <AdminLayout>
@@ -70,7 +130,18 @@ const Departments = () => {
 
         <h2>🏥 Departments Management</h2>
 
-        <form className="department-form" onSubmit={addDepartment}>
+        <input
+          className="search-box"
+          type="text"
+          placeholder="Search Department..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+
+        <form
+          className="department-form"
+          onSubmit={handleSubmit}
+        >
 
           <input
             type="text"
@@ -97,48 +168,69 @@ const Departments = () => {
           />
 
           <button type="submit">
-            Add Department
+            {editId
+              ? "Update Department"
+              : "Add Department"}
           </button>
 
         </form>
 
-        <table className="department-table">
+        <div className="department-table">
 
-          <thead>
-            <tr>
-              <th>Department</th>
-              <th>Head</th>
-              <th>Description</th>
-              <th>Action</th>
-            </tr>
-          </thead>
+          <table>
 
-          <tbody>
-
-            {departments.map((dept) => (
-              <tr key={dept.id}>
-                <td>{dept.name}</td>
-                <td>{dept.head}</td>
-                <td>{dept.description}</td>
-
-                <td>
-                  <button
-                    className="delete-btn"
-                    onClick={() => deleteDepartment(dept.id)}
-                  >
-                    Delete
-                  </button>
-                </td>
+            <thead>
+              <tr>
+                <th>Department</th>
+                <th>Department Head</th>
+                <th>Description</th>
+                <th>Action</th>
               </tr>
-            ))}
+            </thead>
 
-          </tbody>
+            <tbody>
 
-        </table>
+              {filteredDepartments.map((dept) => (
+
+                <tr key={dept.id}>
+
+                  <td>{dept.name}</td>
+
+                  <td>{dept.head}</td>
+
+                  <td>{dept.description}</td>
+
+                  <td>
+
+                    <button
+                      className="edit-btn"
+                      onClick={() => handleEdit(dept)}
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDelete(dept.id)}
+                    >
+                      Delete
+                    </button>
+
+                  </td>
+
+                </tr>
+
+              ))}
+
+            </tbody>
+
+          </table>
+
+        </div>
 
       </div>
     </AdminLayout>
   );
-};
+}
 
 export default Departments;

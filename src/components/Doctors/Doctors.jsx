@@ -1,77 +1,34 @@
-import React from "react";
-import "./Doctors.css";
-
-const doctors = [
+const [doctors, setDoctors] = useState([
   {
     id: 1,
-    name: "Dr. John Smith",
-    specialty: "Cardiologist",
-    image: "https://randomuser.me/api/portraits/men/32.jpg",
+    name: "Dr. James Anderson",
+    department: "Cardiology",
+    experience: "15 Years",
+    image:
+      "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=500",
   },
   {
     id: 2,
-    name: "Dr. Sarah Johnson",
-    specialty: "Neurologist",
-    image: "https://randomuser.me/api/portraits/women/44.jpg",
+    name: "Dr. Emily Watson",
+    department: "Neurology",
+    experience: "12 Years",
+    image:
+      "https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=500",
   },
   {
     id: 3,
     name: "Dr. Michael Brown",
-    specialty: "Orthopedic",
-    image: "https://randomuser.me/api/portraits/men/45.jpg",
+    department: "Orthopedic",
+    experience: "18 Years",
+    image:
+      "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=500",
   },
   {
     id: 4,
-    name: "Dr. Emily Wilson",
-    specialty: "Pediatrician",
-    image: "https://randomuser.me/api/portraits/women/55.jpg",
+    name: "Dr. Sophia Wilson",
+    department: "Pediatrics",
+    experience: "10 Years",
+    image:
+      "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=500",
   },
-  {
-    id: 5,
-    name: "Dr. David Miller",
-    specialty: "Dentist",
-    image: "https://randomuser.me/api/portraits/men/61.jpg",
-  },
-  {
-    id: 6,
-    name: "Dr. Olivia Taylor",
-    specialty: "Dermatologist",
-    image: "https://randomuser.me/api/portraits/women/65.jpg",
-  },
-];
-
-const Doctors = () => {
-  return (
-    <section className="doctors">
-      <div className="container">
-
-        <div className="doctor-title">
-          <h5>OUR DOCTORS</h5>
-          <h2>Meet Our Specialists</h2>
-          <p>
-            Our experienced medical professionals provide the highest quality
-            healthcare with compassion and dedication.
-          </p>
-        </div>
-
-        <div className="doctor-grid">
-          {doctors.map((doctor) => (
-            <div className="doctor-card" key={doctor.id}>
-              <img src={doctor.image} alt={doctor.name} />
-
-              <div className="doctor-info">
-                <h3>{doctor.name}</h3>
-                <p>{doctor.specialty}</p>
-
-                <button>View Profile</button>
-              </div>
-            </div>
-          ))}
-        </div>
-
-      </div>
-    </section>
-  );
-};
-
-export default Doctors;
+]);

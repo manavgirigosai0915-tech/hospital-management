@@ -1,16 +1,19 @@
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { loginUser } from "../../utils/localStorage";
 import "./Login.css";
-import { FaUser, FaLock } from "react-icons/fa";
 
-const Login = () => {
-  const [loginData, setLoginData] = useState({
+function Login() {
+  const navigate = useNavigate();
+
+  const [login, setLogin] = useState({
     email: "",
     password: "",
   });
 
   const handleChange = (e) => {
-    setLoginData({
-      ...loginData,
+    setLogin({
+      ...login,
       [e.target.name]: e.target.value,
     });
   };
@@ -18,50 +21,52 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    alert("Login Successfully!");
+    const result = loginUser(login.email, login.password);
 
-    console.log(loginData);
+    if (result.success) {
+      alert("Login Successful");
 
-    setLoginData({
-      email: "",
-      password: "",
-    });
+      setLogin({
+        email: "",
+        password: "",
+      });
+
+      if (result.role === "admin") {
+        navigate("/dashboard");
+      } else {
+        navigate("/home");
+      }
+    } else {
+      alert(result.message);
+    }
   };
 
   return (
-    <section className="login">
+    <div className="auth-container">
+      <div className="auth-box">
 
-      <div className="login-box">
-
-        <h2>Hospital Login</h2>
-
+        <h2>🏥 Hospital Login</h2>
         <p>Welcome Back</p>
 
         <form onSubmit={handleSubmit}>
 
-          <div className="input-box">
-            <FaUser className="icon" />
-            <input
-              type="email"
-              name="email"
-              placeholder="Enter Email"
-              value={loginData.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
+          <input
+            type="email"
+            name="email"
+            placeholder="Enter Email"
+            value={login.email}
+            onChange={handleChange}
+            required
+          />
 
-          <div className="input-box">
-            <FaLock className="icon" />
-            <input
-              type="password"
-              name="password"
-              placeholder="Enter Password"
-              value={loginData.password}
-              onChange={handleChange}
-              required
-            />
-          </div>
+          <input
+            type="password"
+            name="password"
+            placeholder="Enter Password"
+            value={login.password}
+            onChange={handleChange}
+            required
+          />
 
           <button type="submit">
             Login
@@ -69,10 +74,16 @@ const Login = () => {
 
         </form>
 
-      </div>
+        <div className="bottom-text">
+          Don't have an account?
+          <Link to="/register"> Register</Link>
+        </div>
 
-    </section>
+        
+
+      </div>
+    </div>
   );
-};
+}
 
 export default Login;

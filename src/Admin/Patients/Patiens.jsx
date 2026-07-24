@@ -1,13 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AdminLayout from "../components/Layout/AdminLayout";
 import "./Patients.css";
 
-const Patients = () => {
-  const [patients, setPatients] = useState([
-    { id: 1, name: "Rahul Patel", age: 25, disease: "Fever", phone: "9876543210" },
-    { id: 2, name: "Priya Shah", age: 30, disease: "Diabetes", phone: "9123456780" },
-    { id: 3, name: "Amit Kumar", age: 40, disease: "BP", phone: "9988776655" },
-  ]);
+function Patients() {
+
+  const [patients, setPatients] = useState([]);
 
   const [form, setForm] = useState({
     name: "",
@@ -16,6 +13,51 @@ const Patients = () => {
     phone: "",
   });
 
+  const [editId, setEditId] = useState(null);
+
+  const [search, setSearch] = useState("");
+
+  // Load Patients
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("patients"));
+
+    if (data && data.length > 0) {
+      setPatients(data);
+    } else {
+      const demo = [
+        {
+          id: 1,
+          name: "Rahul Patel",
+          age: 25,
+          disease: "Fever",
+          phone: "9876543210",
+        },
+        {
+          id: 2,
+          name: "Priya Shah",
+          age: 30,
+          disease: "Diabetes",
+          phone: "9123456780",
+        },
+        {
+          id: 3,
+          name: "Amit Kumar",
+          age: 40,
+          disease: "Blood Pressure",
+          phone: "9988776655",
+        },
+      ];
+
+      setPatients(demo);
+      localStorage.setItem("patients", JSON.stringify(demo));
+    }
+  }, []);
+
+  // Save Patients
+  useEffect(() => {
+    localStorage.setItem("patients", JSON.stringify(patients));
+  }, [patients]);
+
   const handleChange = (e) => {
     setForm({
       ...form,
@@ -23,17 +65,38 @@ const Patients = () => {
     });
   };
 
-  const addPatient = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!form.name || !form.age || !form.disease || !form.phone) return;
+    if (
+      !form.name ||
+      !form.age ||
+      !form.disease ||
+      !form.phone
+    ) {
+      alert("Please fill all fields");
+      return;
+    }
 
-    const newPatient = {
-      id: Date.now(),
-      ...form,
-    };
+    if (editId) {
+      const updated = patients.map((patient) =>
+        patient.id === editId
+          ? { ...patient, ...form }
+          : patient
+      );
 
-    setPatients([...patients, newPatient]);
+      setPatients(updated);
+      setEditId(null);
+
+    } else {
+
+      const newPatient = {
+        id: Date.now(),
+        ...form,
+      };
+
+      setPatients([...patients, newPatient]);
+    }
 
     setForm({
       name: "",
@@ -43,18 +106,42 @@ const Patients = () => {
     });
   };
 
-  const deletePatient = (id) => {
-    setPatients(patients.filter((item) => item.id !== id));
+  const handleDelete = (id) => {
+    if (window.confirm("Delete this patient?")) {
+      setPatients(
+        patients.filter((patient) => patient.id !== id)
+      );
+    }
   };
+
+  const handleEdit = (patient) => {
+    setForm(patient);
+    setEditId(patient.id);
+  };
+
+  const filteredPatients = patients.filter((patient) =>
+    patient.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <AdminLayout>
+
       <div className="admin-patients">
 
-        <h2>🧑‍⚕️ Patients Management</h2>
+        <h2>🧑 Patients Management</h2>
 
-        {/* FORM */}
-        <form className="patient-form" onSubmit={addPatient}>
+        <input
+          className="search-box"
+          type="text"
+          placeholder="Search Patient..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+
+        <form
+          className="patient-form"
+          onSubmit={handleSubmit}
+        >
 
           <input
             type="text"
@@ -88,39 +175,70 @@ const Patients = () => {
             onChange={handleChange}
           />
 
-          <button type="submit">Add Patient</button>
+          <button type="submit">
+            {editId ? "Update Patient" : "Add Patient"}
+          </button>
 
         </form>
 
-        {/* TABLE */}
         <div className="patient-table">
 
           <table>
 
             <thead>
+
               <tr>
+
                 <th>Name</th>
+
                 <th>Age</th>
+
                 <th>Disease</th>
+
                 <th>Phone</th>
+
                 <th>Action</th>
+
               </tr>
+
             </thead>
 
             <tbody>
-              {patients.map((p) => (
-                <tr key={p.id}>
-                  <td>{p.name}</td>
-                  <td>{p.age}</td>
-                  <td>{p.disease}</td>
-                  <td>{p.phone}</td>
+
+              {filteredPatients.map((patient) => (
+
+                <tr key={patient.id}>
+
+                  <td>{patient.name}</td>
+
+                  <td>{patient.age}</td>
+
+                  <td>{patient.disease}</td>
+
+                  <td>{patient.phone}</td>
+
                   <td>
-                    <button onClick={() => deletePatient(p.id)}>
+
+                    <button
+                      className="edit-btn"
+                      onClick={() => handleEdit(patient)}
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDelete(patient.id)}
+                    >
                       Delete
                     </button>
+
                   </td>
+
                 </tr>
+
               ))}
+
             </tbody>
 
           </table>
@@ -128,8 +246,9 @@ const Patients = () => {
         </div>
 
       </div>
+
     </AdminLayout>
   );
-};
+}
 
 export default Patients;

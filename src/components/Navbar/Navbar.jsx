@@ -1,93 +1,95 @@
-import React, { useState } from "react";
-import "./Navbar.css";
-import { Link } from "react-router-dom";
-import { FaBars, FaTimes, FaHospital } from "react-icons/fa";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  FaHospital,
+  FaUserCircle,
+  FaSignOutAlt,
+} from "react-icons/fa";
 
-const Navbar = () => {
-  const [menu, setMenu] = useState(false);
+import {
+  getLoggedInUser,
+  logoutUser,
+} from "../../utils/localStorage";
+
+import "./Navbar.css";
+
+function Navbar() {
+  const navigate = useNavigate();
+
+  const user = getLoggedInUser();
+
+  const handleLogout = () => {
+    logoutUser();
+    navigate("/login");
+  };
 
   return (
-    <nav className="navbar">
+    <header className="navbar">
 
-      <div className="container nav-container">
+      <div className="logo">
+        <FaHospital className="logo-icon" />
+        <span>CityCare Hospital</span>
+      </div>
 
-        <div className="logo">
-          <FaHospital className="logo-icon" />
-          <h2>CityCare Hospital</h2>
-        </div>
+      <ul className="nav-links">
 
-        <ul className={menu ? "nav-links active" : "nav-links"}>
+        <li><Link to="/">Home</Link></li>
 
+        <li><Link to="/about">About</Link></li>
+
+        <li><Link to="/departments">Departments</Link></li>
+
+        <li><Link to="/doctors">Doctors</Link></li>
+
+        
+
+        <li><Link to="/appointment">Appointment</Link></li>
+
+        <li><Link to="/gallery">Gallery</Link></li>
+
+        <li><Link to="/contact">Contact</Link></li>
+
+        {user?.role === "admin" && (
           <li>
-            <Link to="/" onClick={() => setMenu(false)}>
-              Home
-            </Link>
+            <Link to="/dashboard">Dashboard</Link>
           </li>
+        )}
 
-          <li>
-            <Link to="/about" onClick={() => setMenu(false)}>
-              About
-            </Link>
-          </li>
+      </ul>
 
-          <li>
-            <Link to="/departments" onClick={() => setMenu(false)}>
-              Departments
-            </Link>
-          </li>
+      <div className="nav-right">
 
-          <li>
-            <Link to="/doctors" onClick={() => setMenu(false)}>
-              Doctors
-            </Link>
-          </li>
+        {user ? (
+          <>
+            <div className="user-info">
+              <FaUserCircle className="user-icon" />
+              <span>{user.name}</span>
+            </div>
 
-          <li>
-            <Link to="/services" onClick={() => setMenu(false)}>
-              Services
-            </Link>
-          </li>
-
-          <li>
-            <Link to="/appointment" onClick={() => setMenu(false)}>
-              Appointment
-            </Link>
-          </li>
-
-          <li>
-            <Link to="/gallery" onClick={() => setMenu(false)}>
-              Gallery
-            </Link>
-          </li>
-
-          <li>
-            <Link to="/contact" onClick={() => setMenu(false)}>
-              Contact
-            </Link>
-          </li>
-
-          <li>
-            <Link to="/login" onClick={() => setMenu(false)}>
+            <button
+              className="logout-btn"
+              onClick={handleLogout}
+            >
+              <FaSignOutAlt />
+              Logout
+            </button>
+          </>
+        ) : (
+          <>
+            <Link className="login-btn" to="/login">
               Login
             </Link>
-          </li>
 
-        </ul>
-
-        <div className="menu-icon">
-
-          {menu ? (
-            <FaTimes onClick={() => setMenu(false)} />
-          ) : (
-            <FaBars onClick={() => setMenu(true)} />
-          )}
-
-        </div>
+            <Link className="register-btn" to="/register">
+              Register
+            </Link>
+          </>
+        )}
 
       </div>
 
-    </nav>
+    </header>
   );
-};
+}
 
 export default Navbar;

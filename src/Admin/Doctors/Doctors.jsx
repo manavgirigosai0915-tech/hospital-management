@@ -1,24 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AdminLayout from "../components/Layout/AdminLayout";
 import "./Doctors.css";
 
-const Doctors = () => {
-  const [doctors, setDoctors] = useState([
-    {
-      id: 1,
-      name: "Dr. John Smith",
-      department: "Cardiology",
-      experience: "10 Years",
-      image: "https://randomuser.me/api/portraits/men/32.jpg",
-    },
-    {
-      id: 2,
-      name: "Dr. Sarah Johnson",
-      department: "Neurology",
-      experience: "8 Years",
-      image: "https://randomuser.me/api/portraits/women/44.jpg",
-    },
-  ]);
+function Doctors() {
+
+  const [doctors, setDoctors] = useState([]);
 
   const [form, setForm] = useState({
     name: "",
@@ -27,14 +13,68 @@ const Doctors = () => {
     image: "",
   });
 
+  const [editId, setEditId] = useState(null);
+
+  const [search, setSearch] = useState("");
+
+  // Load Doctors
+  useEffect(() => {
+
+    const data = JSON.parse(localStorage.getItem("doctors"));
+
+    if (data && data.length > 0) {
+      setDoctors(data);
+    } else {
+      const demo = [
+        {
+          id: 1,
+          name: "Dr. John Smith",
+          department: "Cardiology",
+          experience: "10 Years",
+          image:
+            "https://randomuser.me/api/portraits/men/32.jpg",
+        },
+        {
+          id: 2,
+          name: "Dr. Sarah Johnson",
+          department: "Neurology",
+          experience: "8 Years",
+          image:
+            "https://randomuser.me/api/portraits/women/44.jpg",
+        },
+      ];
+
+      setDoctors(demo);
+
+      localStorage.setItem(
+        "doctors",
+        JSON.stringify(demo)
+      );
+    }
+
+  }, []);
+
+  // Save Doctors
+  useEffect(() => {
+
+    localStorage.setItem(
+      "doctors",
+      JSON.stringify(doctors)
+    );
+
+  }, [doctors]);
+
   const handleChange = (e) => {
+
     setForm({
       ...form,
       [e.target.name]: e.target.value,
     });
+
   };
 
-  const addDoctor = (e) => {
+  const handleSubmit = (e) => {
+
     e.preventDefault();
 
     if (
@@ -43,17 +83,33 @@ const Doctors = () => {
       !form.experience ||
       !form.image
     ) {
-      alert("Please fill all fields");
+      alert("Please Fill All Fields");
       return;
     }
 
-    setDoctors([
-      ...doctors,
-      {
-        id: Date.now(),
-        ...form,
-      },
-    ]);
+    if (editId) {
+
+      const updated = doctors.map((doctor) =>
+        doctor.id === editId
+          ? { ...doctor, ...form }
+          : doctor
+      );
+
+      setDoctors(updated);
+
+      setEditId(null);
+
+    } else {
+
+      setDoctors([
+        ...doctors,
+        {
+          id: Date.now(),
+          ...form,
+        },
+      ]);
+
+    }
 
     setForm({
       name: "",
@@ -61,19 +117,52 @@ const Doctors = () => {
       experience: "",
       image: "",
     });
+
   };
 
-  const deleteDoctor = (id) => {
-    setDoctors(doctors.filter((doctor) => doctor.id !== id));
+  const handleDelete = (id) => {
+
+    if (window.confirm("Delete Doctor?")) {
+
+      setDoctors(
+        doctors.filter((doctor) => doctor.id !== id)
+      );
+
+    }
+
   };
+
+  const handleEdit = (doctor) => {
+
+    setForm(doctor);
+
+    setEditId(doctor.id);
+
+  };
+
+  const filteredDoctors = doctors.filter((doctor) =>
+    doctor.name.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <AdminLayout>
+
       <div className="doctor-page">
 
         <h2>👨‍⚕️ Doctors Management</h2>
 
-        <form className="doctor-form" onSubmit={addDoctor}>
+        <input
+          className="search-box"
+          type="text"
+          placeholder="Search Doctor..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+
+        <form
+          className="doctor-form"
+          onSubmit={handleSubmit}
+        >
 
           <input
             type="text"
@@ -108,15 +197,19 @@ const Doctors = () => {
           />
 
           <button type="submit">
-            Add Doctor
+            {editId ? "Update Doctor" : "Add Doctor"}
           </button>
 
         </form>
 
         <div className="doctor-grid">
 
-          {doctors.map((doctor) => (
-            <div className="doctor-card" key={doctor.id}>
+          {filteredDoctors.map((doctor) => (
+
+            <div
+              className="doctor-card"
+              key={doctor.id}
+            >
 
               <img
                 src={doctor.image}
@@ -126,28 +219,43 @@ const Doctors = () => {
               <h3>{doctor.name}</h3>
 
               <p>
-                <strong>Department:</strong> {doctor.department}
+                <strong>Department:</strong>{" "}
+                {doctor.department}
               </p>
 
               <p>
-                <strong>Experience:</strong> {doctor.experience}
+                <strong>Experience:</strong>{" "}
+                {doctor.experience}
               </p>
 
-              <button
-                className="delete-btn"
-                onClick={() => deleteDoctor(doctor.id)}
-              >
-                Delete
-              </button>
+              <div className="btn-group">
+
+                <button
+                  className="edit-btn"
+                  onClick={() => handleEdit(doctor)}
+                >
+                  Edit
+                </button>
+
+                <button
+                  className="delete-btn"
+                  onClick={() => handleDelete(doctor.id)}
+                >
+                  Delete
+                </button>
+
+              </div>
 
             </div>
+
           ))}
 
         </div>
 
       </div>
+
     </AdminLayout>
   );
-};
+}
 
 export default Doctors;

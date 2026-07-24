@@ -1,100 +1,152 @@
 import React from "react";
-import "./Footer.css";
 import {
-  FaFacebookF,
-  FaTwitter,
-  FaInstagram,
-  FaLinkedinIn,
-  FaPhoneAlt,
+  FaHospital,
+  FaPhone,
   FaEnvelope,
   FaMapMarkerAlt,
+  FaFacebook,
+  FaTwitter,
+  FaInstagram,
 } from "react-icons/fa";
 
-const Footer = () => {
+import "./Footer.css";
+
+
+function Footer() {
+
   return (
+
     <footer className="footer">
 
-      <div className="container footer-container">
 
-        {/* Column 1 */}
+      <div className="footer-container">
+
+
+        {/* About */}
+
         <div className="footer-box">
-          <h2>CityCare Hospital</h2>
+
+          <h2>
+            <FaHospital />
+            CityCare Hospital
+          </h2>
 
           <p>
-            We provide world-class healthcare services with experienced doctors
-            and advanced medical technology.
+            Providing quality healthcare services
+            with experienced doctors and modern
+            medical facilities.
           </p>
+
+        </div>
+
+
+
+        {/* Quick Links */}
+
+        <div className="footer-box">
+
+          <h3>
+            Quick Links
+          </h3>
+
+
+          <ul>
+
+            <li>Home</li>
+
+            <li>About</li>
+
+            <li>Doctors</li>
+
+            <li>Departments</li>
+
+            <li>Appointment</li>
+
+            <li>Contact</li>
+
+          </ul>
+
+        </div>
+
+
+
+
+        {/* Contact */}
+
+        <div className="footer-box">
+
+
+          <h3>
+            Contact Us
+          </h3>
+
+
+          <p>
+            <FaPhone />
+            +91 98765 43210
+          </p>
+
+
+          <p>
+            <FaEnvelope />
+            info@citycare.com
+          </p>
+
+
+          <p>
+            <FaMapMarkerAlt />
+            Rajkot, Gujarat
+          </p>
+
+
+        </div>
+
+
+
+
+        {/* Social */}
+
+        <div className="footer-box">
+
+
+          <h3>
+            Follow Us
+          </h3>
+
 
           <div className="social-icons">
-            <a href="/">
-              <FaFacebookF />
-            </a>
 
-            <a href="/">
-              <FaTwitter />
-            </a>
 
-            <a href="/">
-              <FaInstagram />
-            </a>
+            <FaFacebook />
 
-            <a href="/">
-              <FaLinkedinIn />
-            </a>
+            <FaTwitter />
+
+            <FaInstagram />
+
+
           </div>
+
+
         </div>
 
-        {/* Column 2 */}
-        <div className="footer-box">
-          <h3>Quick Links</h3>
-
-          <ul>
-            <li>Home</li>
-            <li>About</li>
-            <li>Doctors</li>
-            <li>Services</li>
-            <li>Appointment</li>
-          </ul>
-        </div>
-
-        {/* Column 3 */}
-        <div className="footer-box">
-          <h3>Departments</h3>
-
-          <ul>
-            <li>Cardiology</li>
-            <li>Neurology</li>
-            <li>Dental</li>
-            <li>Orthopedic</li>
-            <li>Pediatrics</li>
-          </ul>
-        </div>
-
-        {/* Column 4 */}
-        <div className="footer-box">
-          <h3>Contact Info</h3>
-
-          <p>
-            <FaPhoneAlt /> +91 9876543210
-          </p>
-
-          <p>
-            <FaEnvelope /> info@citycarehospital.com
-          </p>
-
-          <p>
-            <FaMapMarkerAlt /> Rajkot, Gujarat
-          </p>
-        </div>
 
       </div>
+
+
 
       <div className="footer-bottom">
-        © 2026 CityCare Hospital | All Rights Reserved
+
+        © 2026 CityCare Hospital.
+        All Rights Reserved.
+
       </div>
 
+
     </footer>
+
   );
-};
+
+}
+
 
 export default Footer;

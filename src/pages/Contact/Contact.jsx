@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import "./Contact.css";
 import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
 
@@ -17,17 +18,30 @@ const Contact = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  // Send Data to Backend
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    alert("Message Sent Successfully!");
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/contact",
+        formData
+      );
 
-    setFormData({
-      name: "",
-      email: "",
-      subject: "",
-      message: "",
-    });
+      if (response.data.success) {
+        alert("Message Sent Successfully!");
+
+        setFormData({
+          name: "",
+          email: "",
+          subject: "",
+          message: "",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      alert("Failed to send message!");
+    }
   };
 
   return (
@@ -108,7 +122,7 @@ const Contact = () => {
               value={formData.message}
               onChange={handleChange}
               required
-            ></textarea>
+            />
 
             <button type="submit">
               Send Message

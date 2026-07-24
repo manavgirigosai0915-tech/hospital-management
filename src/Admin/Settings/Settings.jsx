@@ -1,37 +1,99 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AdminLayout from "../components/Layout/AdminLayout";
 import "./Settings.css";
 
-const Settings = () => {
+function Settings() {
+
   const [form, setForm] = useState({
-    hospitalName: "CityCare Hospital",
-    email: "info@citycare.com",
-    phone: "+91 98765 43210",
-    address: "Rajkot, Gujarat",
+    hospitalName: "",
+    email: "",
+    phone: "",
+    address: "",
     password: "",
   });
 
+  useEffect(() => {
+
+    const data = JSON.parse(
+      localStorage.getItem("hospitalSettings")
+    );
+
+    if (data) {
+      setForm(data);
+    } else {
+
+      setForm({
+        hospitalName: "CityCare Hospital",
+        email: "info@citycare.com",
+        phone: "+91 9876543210",
+        address: "Rajkot, Gujarat",
+        password: "",
+      });
+
+    }
+
+  }, []);
+
   const handleChange = (e) => {
+
     setForm({
       ...form,
       [e.target.name]: e.target.value,
     });
+
   };
 
   const handleSave = (e) => {
+
     e.preventDefault();
-    alert("Settings Updated Successfully!");
+
+    localStorage.setItem(
+      "hospitalSettings",
+      JSON.stringify(form)
+    );
+
+    alert("Settings Saved Successfully");
+
+  };
+
+  const handleReset = () => {
+
+    if (window.confirm("Reset all settings?")) {
+
+      const defaultData = {
+        hospitalName: "CityCare Hospital",
+        email: "info@citycare.com",
+        phone: "+91 9876543210",
+        address: "Rajkot, Gujarat",
+        password: "",
+      };
+
+      setForm(defaultData);
+
+      localStorage.setItem(
+        "hospitalSettings",
+        JSON.stringify(defaultData)
+      );
+
+    }
+
   };
 
   return (
+
     <AdminLayout>
-      <div className="settings">
 
-        <h2>⚙️ Settings</h2>
+      <div className="settings-page">
 
-        <form onSubmit={handleSave} className="settings-form">
+        <h2>⚙ Hospital Settings</h2>
+
+        <form
+          className="settings-form"
+          onSubmit={handleSave}
+        >
 
           <label>Hospital Name</label>
+
           <input
             type="text"
             name="hospitalName"
@@ -40,6 +102,7 @@ const Settings = () => {
           />
 
           <label>Email</label>
+
           <input
             type="email"
             name="email"
@@ -48,6 +111,7 @@ const Settings = () => {
           />
 
           <label>Phone</label>
+
           <input
             type="text"
             name="phone"
@@ -56,29 +120,50 @@ const Settings = () => {
           />
 
           <label>Address</label>
-          <input
-            type="text"
+
+          <textarea
+            rows="3"
             name="address"
             value={form.address}
             onChange={handleChange}
-          />
+          ></textarea>
 
           <label>Change Password</label>
+
           <input
             type="password"
             name="password"
+            placeholder="New Password"
             value={form.password}
             onChange={handleChange}
-            placeholder="New Password"
           />
 
-          <button type="submit">Save Settings</button>
+          <div className="btn-group">
+
+            <button
+              className="save-btn"
+              type="submit"
+            >
+              Save Settings
+            </button>
+
+            <button
+              type="button"
+              className="reset-btn"
+              onClick={handleReset}
+            >
+              Reset
+            </button>
+
+          </div>
 
         </form>
 
       </div>
+
     </AdminLayout>
+
   );
-};
+}
 
 export default Settings;
