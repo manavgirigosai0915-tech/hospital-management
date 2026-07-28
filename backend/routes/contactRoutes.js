@@ -5,15 +5,19 @@ const {
   addContact,
   getContacts,
   updateContact,
+  deleteContact,
 } = require("../controllers/contactController");
 
-// Save Contact Message
+// Create Contact
 router.post("/", addContact);
 
-// Get All Contact Messages
+// Get All Contacts
 router.get("/", getContacts);
 
 // Update Contact
 router.put("/:id", updateContact);
+
+// Delete Contact
+router.delete("/:id", deleteContact);
 
 module.exports = router;

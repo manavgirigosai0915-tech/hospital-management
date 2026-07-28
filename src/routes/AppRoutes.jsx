@@ -16,6 +16,7 @@ import Doctors from "../pages/Doctors/Doctors";
 import Appointment from "../pages/Appointment/Appointment";
 import Gallery from "../pages/Gallery/Gallery";
 import Contact from "../pages/Contact/Contact";
+import ContactMessages from "../pages/Admin/ContactMessages";
 
 
 // Admin Pages
@@ -249,7 +250,14 @@ element={
 </ProtectedRoute>
 }
 />
-
+<Route
+path="/admin/contact-messages"
+element={
+<ProtectedRoute>
+<ContactMessages />
+</ProtectedRoute>
+}
+/>
 
 
 </Routes>

@@ -76,8 +76,30 @@ const updateContact = (req, res) => {
   );
 };
 
+// Delete Contact
+const deleteContact = (req, res) => {
+  const { id } = req.params;
+
+  Contact.deleteContact(id, (err, result) => {
+    if (err) {
+      console.log(err);
+
+      return res.status(500).json({
+        success: false,
+        message: "Database Error",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Contact Deleted Successfully",
+    });
+  });
+};
+
 module.exports = {
   addContact,
   getContacts,
   updateContact,
+  deleteContact,
 };

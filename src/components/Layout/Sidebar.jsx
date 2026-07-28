@@ -8,6 +8,7 @@ import {
   FaCalendarAlt,
   FaFileAlt,
   FaCog,
+  FaEnvelope,
   FaSignOutAlt,
 } from "react-icons/fa";
 
@@ -58,6 +59,12 @@ function Sidebar() {
         <li>
           <Link to="/admin/appointments">
             <FaCalendarAlt /> Appointments
+          </Link>
+        </li>
+
+        <li>
+          <Link to="/admin/contact-messages">
+            <FaEnvelope /> Contact Messages
           </Link>
         </li>
 

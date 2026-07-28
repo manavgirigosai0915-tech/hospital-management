@@ -51,8 +51,16 @@ const updateContact = (id, contactData, callback) => {
   );
 };
 
+// Delete Contact
+const deleteContact = (id, callback) => {
+  const sql = "DELETE FROM contacts WHERE id = ?";
+
+  db.query(sql, [id], callback);
+};
+
 module.exports = {
   createContact,
   getAllContacts,
   updateContact,
+  deleteContact,
 };
