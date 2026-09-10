@@ -26,67 +26,83 @@ function Navbar() {
   return (
     <header className="navbar">
 
+      {/* Logo */}
       <div className="logo">
         <FaHospital className="logo-icon" />
         <span>CityCare Hospital</span>
       </div>
 
+      {/* Navigation */}
       <ul className="nav-links">
 
-        <li><Link to="/">Home</Link></li>
+        <li>
+          <Link to="/">Home</Link>
+        </li>
 
-        <li><Link to="/about">About</Link></li>
+        <li>
+          <Link to="/about">About</Link>
+        </li>
 
-        <li><Link to="/departments">Departments</Link></li>
+        <li>
+          <Link to="/departments">Departments</Link>
+        </li>
 
-        <li><Link to="/doctors">Doctors</Link></li>
+        <li>
+          <Link to="/doctors">Doctors</Link>
+        </li>
 
-        
+        <li>
+          <Link to="/appointment">Appointment</Link>
+        </li>
 
-        <li><Link to="/appointment">Appointment</Link></li>
+         <li>
+          <Link to="/gallery">Gallery</Link>
+        </li>
 
-        <li><Link to="/gallery">Gallery</Link></li>
-
-        <li><Link to="/contact">Contact</Link></li>
+        <li>
+          <Link to="/contact">Contact</Link>
+        </li>
 
         {user?.role === "admin" && (
-          <li>
-            <Link to="/dashboard">Dashboard</Link>
-          </li>
+          <>
+            <li>
+              <Link to="/dashboard">Dashboard</Link>
+            </li>
+
+            <li className="admin-user">
+              <FaUserCircle className="user-icon" />
+              <span>{user.name}</span>
+            </li>
+
+            <li>
+              <button
+                className="logout-btn"
+                onClick={handleLogout}
+              >
+                <FaSignOutAlt />
+                Logout
+              </button>
+            </li>
+          </>
+        )}
+
+        {!user && (
+          <>
+            <li>
+              <Link className="login-btn" to="/login">
+                Login
+              </Link>
+            </li>
+
+            <li>
+              <Link className="register-btn" to="/register">
+                Register
+              </Link>
+            </li>
+          </>
         )}
 
       </ul>
-
-      <div className="nav-right">
-
-        {user ? (
-          <>
-            <div className="user-info">
-              <FaUserCircle className="user-icon" />
-              <span>{user.name}</span>
-            </div>
-
-            <button
-              className="logout-btn"
-              onClick={handleLogout}
-            >
-              <FaSignOutAlt />
-              Logout
-            </button>
-          </>
-        ) : (
-          <>
-            <Link className="login-btn" to="/login">
-              Login
-            </Link>
-
-            <Link className="register-btn" to="/register">
-              Register
-            </Link>
-          </>
-        )}
-
-      </div>
 
     </header>
   );

@@ -62,8 +62,8 @@ export const loginUser = (email, password) => {
   // ==========================
 
   if (
-    email === "admin@hospital.com" &&
-    password === "admin123"
+    email === "manav@hospital.com" &&
+    password === "manavgosai"
   ) {
 
     const admin = {
